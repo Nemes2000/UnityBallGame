@@ -83,9 +83,11 @@ public class PlayerController : MonoBehaviour
 
     public IEnumerator PowerupCountdownRoutine() 
     {
+        GameObject.Find("Spawn manager").GetComponent<SpawnManager>().EnableAbilityText(powerup.ToString());
         yield return new WaitForSeconds(7);
         powerupIndicator.gameObject.SetActive(false);
         Destroy(powerup.gameObject);
         powerup = null;
+        GameObject.Find("Spawn manager").GetComponent<SpawnManager>().DisableAbilityText();
     }
 }

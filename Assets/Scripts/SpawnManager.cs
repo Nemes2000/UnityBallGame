@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
@@ -8,13 +9,15 @@ public class SpawnManager : MonoBehaviour
     public GameObject[] powerupPrefab;
     public GameObject boss;
     public GameObject restartPanel;
+    public GameObject scoreNumber;
+    public GameObject abilityText;
     private float range = 9;
     private int wave = 1;
 
     void Start()
     {
         Time.timeScale = 1;
-        spawnEnemyWave(wave);
+        SpawnEnemyWave(wave);
     }
 
     void Update()
@@ -23,9 +26,9 @@ public class SpawnManager : MonoBehaviour
         if (enemyCount == 0)
         {
             if((wave % 5)  != 0)
-                spawnEnemyWave(wave);
+                SpawnEnemyWave(wave);
             else
-                spawnBossWave();
+                SpawnBossWave();
         }
     }
 
@@ -36,7 +39,7 @@ public class SpawnManager : MonoBehaviour
         return new Vector3(xPos, 0, zPos);
     }
 
-    void spawnEnemyWave(int enemyCount)
+    void SpawnEnemyWave(int enemyCount)
     {
         for (int i = 0; i < enemyCount; i++)
         {
@@ -45,15 +48,16 @@ public class SpawnManager : MonoBehaviour
         }
         int id = Random.Range(0, powerupPrefab.Length);
         Instantiate(powerupPrefab[id], GenerateSpawnPosition(), powerupPrefab[id].transform.rotation);
+        SetPlayPanel();
         wave++;
     }
 
-    void spawnBossWave()
+    private void SpawnBossWave()
     {
         int num = wave / 5;
         for(int i = 0; i < num; i++)
             Instantiate(boss, GenerateSpawnPosition(), boss.transform.rotation);
-        spawnEnemyWave(wave);
+        SpawnEnemyWave(wave);
     }
 
     public void EndGame()
@@ -61,4 +65,20 @@ public class SpawnManager : MonoBehaviour
         restartPanel.SetActive(true);
         Time.timeScale = 0.0f;
     }
+
+    public void SetPlayPanel()
+    {
+        scoreNumber.GetComponent<Text>().text = wave.ToString();
+    }
+
+    public void EnableAbilityText(string text)
+    {
+        abilityText.GetComponent<Text>().text = text;
+    }
+
+    public void DisableAbilityText()
+    {
+        abilityText.GetComponent<Text>().text = "";
+    }
+
 }

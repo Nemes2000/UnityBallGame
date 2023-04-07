@@ -18,4 +18,9 @@ public class PowerupEarthquake : Powerup
         yield return new WaitForSeconds(2);
         Ready = true;
     }
+
+    public override string ToString()
+    {
+        return "Earthquake";
+    }
 }

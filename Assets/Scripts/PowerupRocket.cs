@@ -21,4 +21,9 @@ public class PowerupRocket : Powerup
         Ready = true;
     }
 
+    public override string ToString()
+    {
+        return "Rocket";
+    }
+
 }

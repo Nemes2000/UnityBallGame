@@ -11,4 +11,9 @@ public class PowerupPower : Powerup
     }
 
     public override IEnumerator ActivatePower(GameObject playerObject) { yield return null; }
+
+    public override string ToString()
+    {
+        return "Power";
+    }
 }
