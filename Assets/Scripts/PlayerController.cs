@@ -5,17 +5,15 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public GameObject powerupIndicator;
-    private float speed = 5.0f;
-    public bool onGround = true;
+    [SerializeField]
+    private GameObject powerupIndicator;
+    [SerializeField]
+    private bool onGround = true;
+    private Powerup powerup = null;
+
     private Rigidbody playerRb;
     private GameObject focalPoint;
-    public Powerup powerup = null;
-    public Powerup Powerup 
-    { 
-        get { return powerup; }
-        set { powerup = value; }
-    }
+    private float speed = 5.0f;
 
     public bool OnGround 
     { 
@@ -42,18 +40,18 @@ public class PlayerController : MonoBehaviour
 
         if(transform.position.y < -3)
         {
-            GameObject.Find("Spawn manager").GetComponent<SpawnManager>().EndGame();   
+            GameObject.Find("GameManager").GetComponent<GameManager>().EndGame();   
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Powerup"))
+        if (other.CompareTag("Powerup") && powerup == null)
         {
             powerup = other.gameObject.GetComponent<Powerup>();
             powerup.gameObject.SetActive(false);
             powerupIndicator.gameObject.SetActive(true);
-            StartCoroutine(PowerupCountdownRoutine());
+            StartCoroutine(PowerupCountdownRoutine(powerup));
         }
     }
 
@@ -81,13 +79,12 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public IEnumerator PowerupCountdownRoutine() 
+    public IEnumerator PowerupCountdownRoutine(Powerup powerUp) 
     {
-        GameObject.Find("Spawn manager").GetComponent<SpawnManager>().EnableAbilityText(powerup.ToString());
-        yield return new WaitForSeconds(7);
+        GameObject.Find("GameManager").GetComponent<GameManager>().EnableAbilityText(powerUp.ToString());
+        yield return new WaitForSeconds(powerUp.PowerUpTime);
         powerupIndicator.gameObject.SetActive(false);
-        Destroy(powerup.gameObject);
-        powerup = null;
-        GameObject.Find("Spawn manager").GetComponent<SpawnManager>().DisableAbilityText();
+        Destroy(powerUp.gameObject);
+        GameObject.Find("GameManager").GetComponent<GameManager>().DisableAbilityText();
     }
 }

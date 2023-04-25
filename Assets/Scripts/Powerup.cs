@@ -5,6 +5,12 @@ using UnityEngine;
 public abstract class Powerup : MonoBehaviour
 {
     private float strenght;
+    private int powerUpTime = 7;
+
+    public int PowerUpTime
+    {
+        get { return this.powerUpTime; }
+    }
     public bool Ready { get; set; }
 
     public float Strenght { get; set; }

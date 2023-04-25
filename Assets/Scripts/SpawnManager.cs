@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject[] enemyPrefab;
-    public GameObject[] powerupPrefab;
-    public GameObject boss;
-    public GameObject restartPanel;
-    public GameObject scoreNumber;
-    public GameObject abilityText;
+    [SerializeField]
+    private GameObject[] enemyPrefab;
+    [SerializeField]
+    private GameObject[] powerupPrefab;
+    [SerializeField]
+    private GameObject boss;
+    
     private float range = 9;
     private int wave = 1;
+
+    public int Wave
+    {
+        get { return wave; }
+    }
 
     void Start()
     {
@@ -48,7 +55,7 @@ public class SpawnManager : MonoBehaviour
         }
         int id = Random.Range(0, powerupPrefab.Length);
         Instantiate(powerupPrefab[id], GenerateSpawnPosition(), powerupPrefab[id].transform.rotation);
-        SetPlayPanel();
+        GameObject.Find("GameManager").GetComponent<GameManager>().SetPlayPanel(wave);
         wave++;
     }
 
@@ -59,26 +66,4 @@ public class SpawnManager : MonoBehaviour
             Instantiate(boss, GenerateSpawnPosition(), boss.transform.rotation);
         SpawnEnemyWave(wave);
     }
-
-    public void EndGame()
-    {
-        restartPanel.SetActive(true);
-        Time.timeScale = 0.0f;
-    }
-
-    public void SetPlayPanel()
-    {
-        scoreNumber.GetComponent<Text>().text = wave.ToString();
-    }
-
-    public void EnableAbilityText(string text)
-    {
-        abilityText.GetComponent<Text>().text = text;
-    }
-
-    public void DisableAbilityText()
-    {
-        abilityText.GetComponent<Text>().text = "";
-    }
-
 }
