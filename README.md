@@ -1,3 +1,3 @@
 # UnityBallGame
 
-Documentation is can be found in the <i>documents</i> folder
+About the game you can find more in the <i>documentation</i> folder.
